@@ -7,4 +7,5 @@ import com.gestion.eventos.api.domain.Event;
 public interface IEventService {
     List<Event> findAll();
     Event save(Event event);
+    Event findById(Long id);
 }
