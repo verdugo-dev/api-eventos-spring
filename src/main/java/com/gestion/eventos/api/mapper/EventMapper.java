@@ -3,6 +3,7 @@ package com.gestion.eventos.api.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import com.gestion.eventos.api.domain.Event;
 import com.gestion.eventos.api.dto.EventRequestDto;
@@ -14,4 +15,6 @@ public interface EventMapper {
     EventResponseDto toResponseDto(Event event);
 
     List<EventResponseDto> toEventResponseDtoToList(List<Event> events);
+
+    void updateEventFromDto(EventRequestDto dto, @MappingTarget Event event);
 }
