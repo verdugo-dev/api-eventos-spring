@@ -1,7 +1,6 @@
 package com.gestion.eventos.api.security.jwt;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -10,8 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 @Component
 public class JwtGenerator {
@@ -39,5 +43,38 @@ public class JwtGenerator {
             .compact();
 
         return token;
+    }
+
+    public String getUsernameFromJwt(String token) {
+        Claims claims = Jwts.parser()
+            .verifyWith(getSigningKey())
+            .build()
+            .parseEncryptedClaims(token)
+            .getPayload();
+
+        return claims.getSubject();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser()  
+                .verifyWith((SecretKey) getSigningKey())
+                .build()
+                .parseSignedClaims(token);
+            
+            return true;
+        } catch (MalformedJwtException e) {
+            System.out.println("Invalid JWT token: " + e.getMessage());
+        } catch (ExpiredJwtException e) {
+            System.out.println("Jwt token is unsupported: " + e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            System.out.println("JWT token is unsupported: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("JWT claims string is empty: " + e.getMessage());
+        } catch (SignatureException e) {
+            System.out.println("Signature validation failed: " + e.getMessage());
+        }
+
+        return false;
     }
 }
