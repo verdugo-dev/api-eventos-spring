@@ -49,7 +49,7 @@ public class JwtGenerator {
         Claims claims = Jwts.parser()
             .verifyWith(getSigningKey())
             .build()
-            .parseEncryptedClaims(token)
+            .parseSignedClaims(token)
             .getPayload();
 
         return claims.getSubject();
