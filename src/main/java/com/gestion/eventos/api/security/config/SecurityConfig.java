@@ -1,4 +1,4 @@
-package com.gestion.eventos.api.security;
+package com.gestion.eventos.api.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,9 +41,11 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> 
                 auth.requestMatchers("/api/v1/auth/**").permitAll()
+                    .requestMatchers("/h2-console/**").permitAll()
                     // .requestMatchers(HttpMethod.GET, "/api/v1/events/**").authenticated()
                     .anyRequest().authenticated()
-            );
+            )
+            .headers(AbstractHttpConfigurer::disable);
             // .httpBasic(Customizer.withDefaults());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

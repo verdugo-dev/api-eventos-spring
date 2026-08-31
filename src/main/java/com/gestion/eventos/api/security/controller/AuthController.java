@@ -1,4 +1,4 @@
-package com.gestion.eventos.api.controller;
+package com.gestion.eventos.api.security.controller;
 
 import java.util.Collections;
 
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gestion.eventos.api.domain.Role;
 import com.gestion.eventos.api.domain.User;
-import com.gestion.eventos.api.dto.JwtAuthResponseDto;
-import com.gestion.eventos.api.dto.LoginDto;
-import com.gestion.eventos.api.dto.RegisterDto;
 import com.gestion.eventos.api.mapper.UserMapper;
 import com.gestion.eventos.api.repository.RoleRepository;
 import com.gestion.eventos.api.repository.UserRepository;
+import com.gestion.eventos.api.security.dto.JwtAuthResponseDto;
+import com.gestion.eventos.api.security.dto.LoginDto;
+import com.gestion.eventos.api.security.dto.RegisterDto;
 import com.gestion.eventos.api.security.jwt.JwtGenerator;
 
 import lombok.RequiredArgsConstructor;

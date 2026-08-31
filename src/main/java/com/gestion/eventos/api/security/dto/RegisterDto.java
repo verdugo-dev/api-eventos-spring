@@ -1,8 +1,6 @@
-package com.gestion.eventos.api.dto;
+package com.gestion.eventos.api.security.dto;
 
 import java.util.Set;
-
-import com.gestion.eventos.api.domain.Role;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -30,5 +28,5 @@ public class RegisterDto {
     @NotBlank(message =  "El nombre no puede estar vacio")
     private String name;
 
-    private Set<Role> roles;
+    private Set<String> roles;
 }
