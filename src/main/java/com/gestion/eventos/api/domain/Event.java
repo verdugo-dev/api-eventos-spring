@@ -17,6 +17,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -40,6 +42,8 @@ public class Event {
         joinColumns = @JoinColumn(name = "event_id"),
         inverseJoinColumns = @JoinColumn(name = "speakers_id")
     )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Speaker> speakers = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,6 +51,8 @@ public class Event {
     private Category category;
 
     @ManyToMany(mappedBy = "attendedEvents", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<User> attendedUsers = new HashSet<>();
 
     public void addSpeaker(Speaker speaker) {

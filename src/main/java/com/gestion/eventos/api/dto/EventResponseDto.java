@@ -1,9 +1,7 @@
 package com.gestion.eventos.api.dto;
 
 import java.time.LocalDate;
-import java.util.List;
-
-import com.gestion.eventos.api.domain.Category;
+import java.util.Set;
 
 import lombok.Data;
 
@@ -13,6 +11,9 @@ public class EventResponseDto {
     private String name;
     private LocalDate date;
     private String location;
-    private Category category;
-    private List<SpeakerResponseDto> speakerDtos;
+
+    private Long categoryId;
+    private String categoryName;
+
+    private Set<SpeakerResponseDto> speakers;
 }
