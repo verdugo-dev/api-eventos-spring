@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -40,4 +41,21 @@ public class Event {
         inverseJoinColumns = @JoinColumn(name = "speakers_id")
     )
     private Set<Speaker> speakers = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    @ManyToMany(mappedBy = "attendedEvents", fetch = FetchType.LAZY)
+    private Set<User> attendedUsers = new HashSet<>();
+
+    public void addSpeaker(Speaker speaker) {
+        this.speakers.add(speaker);
+        speaker.getEvents().add(this);
+    }
+
+    public void removeSpeaker(Speaker speaker) {
+        this.speakers.remove(speaker);
+        speaker.getEvents().remove(this);
+    }
 }

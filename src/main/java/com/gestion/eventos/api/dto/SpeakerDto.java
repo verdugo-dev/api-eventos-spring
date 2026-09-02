@@ -1,18 +1,19 @@
 package com.gestion.eventos.api.dto;
 
-import java.time.LocalDate;
-import java.util.List;
 
 import com.gestion.eventos.api.domain.Category;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class EventResponseDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class SpeakerDto {
     private Long id;
     private String name;
-    private LocalDate date;
-    private String location;
+    private String email;
+    private String bio;
     private Category category;
-    private List<SpeakerDto> speakerDtos;
 }
