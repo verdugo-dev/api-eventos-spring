@@ -12,7 +12,9 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -34,6 +36,8 @@ public class Speaker {
     private String bio;
 
     @ManyToMany(mappedBy = "speakers")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Event> events = new HashSet<>();
 
     
