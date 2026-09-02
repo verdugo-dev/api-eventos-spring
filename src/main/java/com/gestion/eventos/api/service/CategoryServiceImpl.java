@@ -26,10 +26,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Category> findById(Long id) {
-        return Optional.ofNullable(categoryRepository.findById(id).orElseThrow(
+    public Category findById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Categoria no encontrada con id: " + id)
-        ));
+        );
     }
 
     @Override
