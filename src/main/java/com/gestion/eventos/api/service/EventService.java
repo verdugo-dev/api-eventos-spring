@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +15,7 @@ import com.gestion.eventos.api.domain.Category;
 import com.gestion.eventos.api.domain.Event;
 import com.gestion.eventos.api.domain.Speaker;
 import com.gestion.eventos.api.dto.EventRequestDto;
+import com.gestion.eventos.api.dto.EventResponseDto;
 import com.gestion.eventos.api.exception.ResourceNotFoundException;
 import com.gestion.eventos.api.mapper.EventMapper;
 import com.gestion.eventos.api.repository.EventRepository;
@@ -29,8 +33,20 @@ public class EventService implements IEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Event> findAll() {
-        return eventRepository.findAll();
+    public Page<EventResponseDto> findAll(String name, Pageable pageable) {
+        Page<Event> eventsPage;
+
+        if (name != null && !name.trim().isEmpty()) {
+            eventsPage = eventRepository.findByNameContainingIgnoreCase(name, pageable);
+        } else {
+            eventsPage = eventRepository.findAll(pageable);
+        }
+
+        List<EventResponseDto> dtos = eventsPage.getContent().stream()
+            .map(eventMapper::toResponseDto)
+            .collect(Collectors.toList());
+
+        return new PageImpl<>(dtos, pageable, eventsPage.getTotalElements());
     }
 
     @Override

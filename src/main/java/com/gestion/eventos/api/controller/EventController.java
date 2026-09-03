@@ -1,7 +1,8 @@
 package com.gestion.eventos.api.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestion.eventos.api.domain.Event;
@@ -33,12 +35,12 @@ public class EventController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<List<EventResponseDto>> getAllEvents() {
-       List<Event> events = eventService.findAll();
-       List<EventResponseDto> responseDtos = eventMapper.toEventResponseDtoToList(events);
-
-       return ResponseEntity.ok(responseDtos);
-       // return eventMapper.toEventResponseDtoToList(events);
+    public ResponseEntity<Page<EventResponseDto>> getAllEvents(
+        @RequestParam(required = false) String name,
+        @PageableDefault(page = 0, size = 10, sort = "name") Pageable pageable
+    ) {
+       Page<EventResponseDto> events = eventService.findAll(name, pageable);
+       return ResponseEntity.ok(events);
     }
 
     @PostMapping
