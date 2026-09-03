@@ -44,8 +44,7 @@ public class EventController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventRequestDto requestDto) {
-        Event eventToSave = eventMapper.toEntity(requestDto);
-        Event eventSaved = eventService.save(eventToSave);
+        Event eventSaved = eventService.save(requestDto);
         EventResponseDto responseDto = eventMapper.toResponseDto(eventSaved);
         
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
@@ -66,9 +65,10 @@ public class EventController {
         @PathVariable Long id,
         @Valid @RequestBody EventRequestDto requestDto
     ) {
-        Event eventToUpdate = eventService.findById(id);
-        eventMapper.updateEventFromDto(requestDto, eventToUpdate);
-        Event updateEvent = eventService.save(eventToUpdate);
+        // Event eventToUpdate = eventService.findById(id);
+        // eventMapper.updateEventFromDto(requestDto, eventToUpdate);
+        // Event updateEvent = eventService.save(eventToUpdate);
+        Event updateEvent = eventService.update(id, requestDto);
         return ResponseEntity.ok(eventMapper.toResponseDto(updateEvent));
     }
 
