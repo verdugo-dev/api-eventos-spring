@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -37,5 +39,27 @@ public class GlobalExceptionHandler {
         body.put("message", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        Map<String, String> errorDetails = new HashMap<>();
+        errorDetails.put("error", "Conflicto de Datos");
+        errorDetails.put("message", "La operación no se pudo completar debido a un conflicto de datos. Asegúrate de que los valores sean únicos y las referencias existan.");
+        // O puedes usar el mensaje original de la causa raíz si no te importa exponerlo (no recomendado)
+        errorDetails.put("message", ex.getRootCause() != null ? ex.getRootCause().getMessage() : "Error de integridad de datos.");
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);     
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
+        System.err.println("Ocurrio un error inesperado: " + ex.getMessage());
+        ex.printStackTrace();
+
+        Map<String, String> errorDetails = new HashMap<>();
+        errorDetails.put("error", "Error Interno del servidor");
+        errorDetails.put("message", "Ocurrio un error inesperado. Por favor, intentalo de nuevo mas tarde");
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

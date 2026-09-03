@@ -2,6 +2,7 @@ package com.gestion.eventos.api.mapper;
 
 import java.util.List;
 
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
@@ -9,8 +10,8 @@ import com.gestion.eventos.api.domain.Speaker;
 import com.gestion.eventos.api.dto.SpeakerRequestDto;
 import com.gestion.eventos.api.dto.SpeakerResponseDto;
 
+@Mapper(componentModel = "spring")
 public interface SpeakerMapper {
-    @Mapping(target = "events", ignore = true)
     SpeakerResponseDto toDto(Speaker speaker);
     
     @Mapping(target = "id", ignore = true)
